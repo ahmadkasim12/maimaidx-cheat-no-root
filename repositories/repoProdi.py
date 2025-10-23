@@ -8,7 +8,7 @@ from mongodb.mongoCollection import TbProdi
 
 class ProdiRepository:
     @staticmethod
-    def GetById(
+    async def GetById(
         prodiId: str
     ) -> ProdiView | None:
         query: dict[str, Any] = {
@@ -20,7 +20,7 @@ class ProdiRepository:
             return None
         
         if prodi["facultyId"]:
-            data = FacultyController.GetById(str(prodi["facultyId"]))
+            data = await FacultyController.GetById(str(prodi["facultyId"]))
             prodi["facultyId"] = str(prodi["facultyId"])
             prodi["facultyName"] = data.name
         
@@ -28,7 +28,7 @@ class ProdiRepository:
         return ProdiView (**prodi)
         
     @staticmethod
-    def Create(
+    async def Create(
         param: ProdiRequestCreate
     ) -> str | None:
         newParam = param.model_dump()

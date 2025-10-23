@@ -34,10 +34,10 @@ def ApiRouter_Prodi_Find(
     summary="Get Prodi by Id",
     response_model=ResponseProdiView
 )
-def ApiRoute_Get_Prodi_Id(
+async def ApiRoute_Get_Prodi_Id(
     prodiId: str
 ):
-    data = ProdiController.GetById(prodiId)
+    data = await ProdiController.GetById(prodiId)
     
     return ResponseProdiView(
         status_code=200,
@@ -50,14 +50,14 @@ def ApiRoute_Get_Prodi_Id(
     response_model=ResponseProdiView,
     summary="Create Prodi",
 )
-def ApiRoute_Create_Prodi(
+async def ApiRoute_Create_Prodi(
     req: ProdiRequestCreate = Body(
         ...
     )
 ):
-    newProdiId = ProdiController.Create(req)
+    newProdiId = await ProdiController.Create(req)
     
-    data = ProdiController.GetById(newProdiId)
+    data = await ProdiController.GetById(newProdiId)
     
     return ResponseProdiView(
         status_code=200,

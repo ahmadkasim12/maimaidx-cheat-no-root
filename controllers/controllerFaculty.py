@@ -48,10 +48,10 @@ class FacultyController:
         }
     
     @staticmethod
-    def GetById(
+    async def GetById(
         facultyId: str
     ) -> FacultyView:
-        data = FacultyRepository.GetById(
+        data = await FacultyRepository.GetById(
             facultyId
         )
         
@@ -64,10 +64,10 @@ class FacultyController:
         return data
     
     @staticmethod
-    def Create(
+    async def Create(
         param: FacultyRequestCreate
     ):
-        newDataId = FacultyRepository.Create(
+        newDataId = await FacultyRepository.Create(
             FacultyCreate(
                 name=param.name,
                 status=param.status,
@@ -85,17 +85,24 @@ class FacultyController:
         return newDataId
     
     @staticmethod
-    def Update(
+    async def Update(
         facultyId: str,
         param: FacultyRequestUpdate
     ):
-        currentData: FacultyView = FacultyController.GetById(
+        currentData: FacultyView = await FacultyController.GetById(
             facultyId
         )
         
-        if not FacultyRepository.Update(
+        extracted: dict[str, Any] = param.model_dump() # this will comeout as {"name": "string", "status": bool, "email": "string"}
+        for e in param.model_dump():
+            if extracted[e] is None:
+                extracted.pop(e)
+        
+        print(extracted)
+        
+        if not await FacultyRepository.Update(
             currentData.id,
-            param.model_dump()
+            extracted
         ):
             raise HTTPException(
                 status_code=500,
@@ -104,14 +111,14 @@ class FacultyController:
         return currentData.id
     
     @staticmethod
-    def Delete(
+    async def Delete(
         facultyId: str,
     ):
-        currentData = FacultyController.GetById(
+        currentData = await FacultyController.GetById(
             facultyId
         )
         
-        if not FacultyRepository.Update(
+        if not await FacultyRepository.Update(
             currentData.id,
             param={
                 "isDeleted": True

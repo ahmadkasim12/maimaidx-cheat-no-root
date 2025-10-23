@@ -5,7 +5,7 @@ from mongodb.mongoCollection import TbFaculty
 
 class FacultyRepository:
     @staticmethod
-    def GetById(
+    async def GetById(
         facultyId: str
     ) -> FacultyView | None:
         query: dict[str, Any] = {
@@ -20,14 +20,14 @@ class FacultyRepository:
             return FacultyView (**product)
     
     @staticmethod
-    def Create(
+    async def Create(
         param: FacultyRequestCreate
     ):
         result = TbFaculty.insert_one(param.model_dump())
         return str(result.inserted_id)
     
     @staticmethod
-    def Update(
+    async def Update(
         facultyId: str,
         param: dict[str, Any]
     ):

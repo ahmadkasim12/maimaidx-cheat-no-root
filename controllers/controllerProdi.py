@@ -11,7 +11,7 @@ from repositories.repoProdi import ProdiRepository
 
 class ProdiController:
     @staticmethod
-    def Find(
+    async def Find(
         name: str | None,
         facultyId : str | None,
         size: int,
@@ -46,7 +46,7 @@ class ProdiController:
             p["_id"] = str(p["_id"])
             if p["facultyId"] is not None:
                 newFacultyId = str(p["facultyId"])
-                data = FacultyController.GetById(newFacultyId)
+                data = await FacultyController.GetById(newFacultyId)
                 p["facultyName"] = data.name
                 p["facultyId"] = newFacultyId
                 
@@ -59,10 +59,10 @@ class ProdiController:
         )
     
     @staticmethod
-    def GetById(
+    async def GetById(
         prodiId: str
     ) -> ProdiView:
-        data = ProdiRepository.GetById(prodiId)
+        data = await ProdiRepository.GetById(prodiId)
         if not data:
             raise HTTPException(
                 status_code=404,
@@ -73,10 +73,10 @@ class ProdiController:
         return data
     
     @staticmethod
-    def Create(
+    async def Create(
         param: ProdiRequestCreate
     ) -> str:
-        newProdiId = ProdiRepository.Create(
+        newProdiId = await ProdiRepository.Create(
             ProdiCreate(
                 name=param.name,
                 lecturer=param.lecturer,
@@ -91,7 +91,7 @@ class ProdiController:
                 detail="Failed to create Prodi"
             )
         
-        facultyIdFetch = FacultyController.GetById(param.facultyId)
+        facultyIdFetch = await FacultyController.GetById(param.facultyId)
         
         if not facultyIdFetch:
              raise HTTPException(

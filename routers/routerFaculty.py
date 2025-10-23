@@ -34,7 +34,7 @@ async def ApiRouter_Faculty_Find(
 async def ApiRouter_Faculty_GetById(
     facultyId: str
 ):
-    data = FacultyController.GetById(
+    data = await FacultyController.GetById(
         facultyId
     )
     
@@ -54,11 +54,11 @@ async def ApiRouter_Faculty_Create(
         default=...,
     )
 ):
-    newFacultyId = FacultyController.Create(
+    newFacultyId = await FacultyController.Create(
         param=req
     )
     
-    data = FacultyController.GetById(
+    data = await FacultyController.GetById(
         newFacultyId
     )
     
@@ -79,12 +79,12 @@ async def ApiRouter_Faculty_Update(
         default=...,
     )
 ):
-    updatedProductId = FacultyController.Update(
+    updatedProductId = await FacultyController.Update(
         facultyId,
         req
     )
     
-    data = FacultyController.GetById(
+    data = await FacultyController.GetById(
         updatedProductId
     )
     
@@ -104,7 +104,7 @@ async def ApiRouter_Faculty_Delete(
         default=...,
     ),
 ):
-    deletedProductId = FacultyController.Delete(
+    deletedProductId = await FacultyController.Delete(
         facultyId
     )
     
