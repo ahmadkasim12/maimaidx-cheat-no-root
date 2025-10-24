@@ -13,13 +13,13 @@ ApiRouter_Prodi = APIRouter(
     "/find",
     summary="Get All Prodi"
 )
-def ApiRouter_Prodi_Find(
+async def ApiRouter_Prodi_Find(
     name: str = Query(default=None, description="Nama Prodi"),
     facultyId: str = Query(default=None, description="Fakultas ID"),
     size: int = Query(default=10, ge=1, le=100, description="Jumlah data per halaman"),
     page: int = Query(default=1, ge=1, description="Nomor halaman")
 ):
-    data = ProdiController.Find(
+    data = await ProdiController.Find(
         name=name,
         facultyId=facultyId,
         size=size,
